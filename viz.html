@@ -1,7 +1,9 @@
 <html>
 <head>
 <style>
-
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 text {
   font: 10px sans-serif;
 }
@@ -19,13 +21,70 @@ text {
 
     stroke-width: 2;
   }
+  .d3-tip {
+  line-height: 1;
+      font-size: 15px;
+
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Northward tooltips */
+.d3-tip.n:after {
+  content: "\25BC";
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  text-align: center;
+}
+
+/* Eastward tooltips */
+.d3-tip.e:after {
+  content: "\25C0";
+  margin: -4px 0 0 0;
+  top: 50%;
+  left: -8px;
+}
+
+/* Southward tooltips */
+.d3-tip.s:after {
+  content: "\25B2";
+  margin: 0 0 1px 0;
+  top: -8px;
+  left: 0;
+  text-align: center;
+}
+
+/* Westward tooltips */
+.d3-tip.w:after {
+  content: "\25B6";
+  margin: -4px 0 0 -1px;
+  top: 50%;
+  left: 100%;
+}
+
 
 </style>
 </head>
 <body>
 </body>
-
 <script>
+
 /**
  * Maps the spreadsheet cells into a dataframe, consisting of an array of rows (i.e. a 2d array)
  * In many cases we have empty rows or incomplete rows, so you can skip those by including 
@@ -80,6 +139,9 @@ function drawBubbleChart(root){
     // indicating where to draw them (x,y), and how big to draw them (r).
     // This is worked out using the "value" property of each leaf.
     //
+    var tip = d3.tip().attr('class', 'd3-tip').html(function(d) { return "<strong>Title:</strong> " + d.name + '<br><strong>Author:</strong> ' + d.author+ '<br><strong>Pages:</strong> ' + d.value; });
+    tip.direction('e') // Position the tooltip to the right of a target element
+
     var bubble = d3.layout.pack()
       .sort(null)
       .size([960,960])
@@ -92,7 +154,8 @@ function drawBubbleChart(root){
                 .attr("width",960)
                 .attr("height", 960)
                 .attr("class","bubble");
-    
+    svg.call(tip)
+
     //
     // For each leaf, create a new "node" and place it in the correct
     // location using the transform attribute.
@@ -102,7 +165,9 @@ function drawBubbleChart(root){
                   .filter(function(d){ return !d.children;}))
                   .enter()
                   .append("g")
-                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+                  .on('mouseover', tip.show)
+                  .on('mouseout', tip.hide);
 
    //
    // For each node, make a circle of the correct radius (r) and
@@ -181,6 +246,7 @@ function render(data){
 </script>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="https://spreadsheets.google.com/feeds/cells/1ISIa2f09vx3qXUyAtnw0J8UdU-tEstBFkfuiQt1Ueqg/od6/public/values?alt=json-in-script&callback=render"></script>
 
 </html>
