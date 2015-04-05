@@ -141,7 +141,7 @@ function drawBubbleChart(root){
        .attr("dy", ".3em")
        .style("text-anchor", "middle")
        .text(function(d) { 
-              return d.name;
+              return d.name.substring(0, d.r / 3);
         });
 }
 
