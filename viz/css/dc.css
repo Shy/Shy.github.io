@@ -1,5 +1,6 @@
 div.dc-chart {
     float: left;
+    padding-top: 10px;
 }
 
 .dc-chart rect.bar {

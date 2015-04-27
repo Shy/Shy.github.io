@@ -27,8 +27,8 @@ function author(ndx){
   hostSumGroup = hostDimension.group();
 
   authorRow
-    .width(496)
-    .height(496)
+    .width(520)
+    .height(520)
     .dimension(hostDimension)
     .group(hostSumGroup)
     .elasticX(true)    
@@ -47,8 +47,8 @@ function genre(ndx){
   genreSumGroup = genreDimension.group();
 
   genrePie
-    .width(496)
-    .height(496)    
+    .width(520)
+    .height(520)    
     .dimension(genreDimension)
     .group(genreSumGroup)    
     .colors(d3.scale.category10())
@@ -68,8 +68,8 @@ function type(ndx){
   typeSumGroup = typeDimension.group();
 
   typePie
-    .width(496)
-    .height(496)    
+    .width(520)
+    .height(520)    
     .dimension(typeDimension)
     .group(typeSumGroup)    
     .colors(d3.scale.category10())
@@ -89,8 +89,8 @@ function store(ndx){
   storeSumGroup = storeDimension.group();
 
   storePie
-    .width(496)
-    .height(496)    
+    .width(520)
+    .height(520)    
     .dimension(storeDimension)
     .group(storeSumGroup)    
     .colors(d3.scale.category10())
