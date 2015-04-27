@@ -115,7 +115,10 @@ function listDatatable(ndx){
     .group(function(d) { return ""
      })
     .columns([
-      'Title', 'Pages', 'Author', 'Genre'
+      function(d) { return d.Title; },
+      function(d) { return d.Pages; },
+      function(d) { return d.Author; },
+      function(d) { return d.Genre; },
     ])
     .sortBy(function(d){ return d.Title; })
     .order(d3.ascending);
