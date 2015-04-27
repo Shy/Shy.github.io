@@ -27,8 +27,8 @@ function author(ndx){
   hostSumGroup = hostDimension.group();
 
   authorRow
-    .width(582)
-    .height(500)
+    .width(496)
+    .height(496)
     .dimension(hostDimension)
     .group(hostSumGroup)
     .elasticX(true)    
@@ -47,8 +47,8 @@ function genre(ndx){
   genreSumGroup = genreDimension.group();
 
   genrePie
-    .width(582)
-    .height(500)    
+    .width(496)
+    .height(496)    
     .dimension(genreDimension)
     .group(genreSumGroup)    
     .colors(d3.scale.category10())
@@ -68,8 +68,8 @@ function type(ndx){
   typeSumGroup = typeDimension.group();
 
   typePie
-    .width(582)
-    .height(500)    
+    .width(496)
+    .height(496)    
     .dimension(typeDimension)
     .group(typeSumGroup)    
     .colors(d3.scale.category10())
@@ -89,8 +89,8 @@ function store(ndx){
   storeSumGroup = storeDimension.group();
 
   storePie
-    .width(582)
-    .height(500)    
+    .width(496)
+    .height(496)    
     .dimension(storeDimension)
     .group(storeSumGroup)    
     .colors(d3.scale.category10())
@@ -115,10 +115,7 @@ function listDatatable(ndx){
     .group(function(d) { return ""
      })
     .columns([
-      function(d) { return d.Title; },
-      function(d) { return d.Pages; },
-      function(d) { return d.Author; },
-      function(d) { return d.Genre; },
+      'Title', 'Pages', 'Author', 'Genre'
     ])
     .sortBy(function(d){ return d.Title; })
     .order(d3.ascending);
