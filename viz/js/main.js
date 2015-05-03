@@ -3,7 +3,7 @@ var genrePie = dc.pieChart("#genrePie");
 var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
-var pageMonth = dc.barChart("#pageMonth");
+// var pageMonth = dc.barChart("#pageMonth");
 
 function render(data){
 
@@ -69,6 +69,7 @@ function author(ndx){
     .width(420)
     .height(420)
     .dimension(hostDimension)
+    .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
     .group(hostSumGroup)
     .elasticX(true)    
     .gap(0)
@@ -90,8 +91,8 @@ function genre(ndx){
     .height(420)    
     .dimension(genreDimension)
     .group(genreSumGroup)    
-    .colors(d3.scale.category10())
     .minAngleForLabel(.15)
+    .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
     .legend(dc.legend())
     .label(function(d) {
       percent = (Math.floor(d.value/genreDimension.groupAll().value() * 100));
@@ -111,8 +112,7 @@ function type(ndx){
     .height(420)    
     .dimension(typeDimension)
     .group(typeSumGroup)    
-    .colors(d3.scale.category10())
-    .minAngleForLabel(.15)
+    .ordinalColors([ '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39'])    .minAngleForLabel(.15)
     .legend(dc.legend())
     .label(function(d) {
       percent = (Math.floor(d.value/typeDimension.groupAll().value() * 100));
@@ -132,7 +132,7 @@ function store(ndx){
     .height(420)    
     .dimension(storeDimension)
     .group(storeSumGroup)    
-    .colors(d3.scale.category10())
+    .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3'])
     .minAngleForLabel(.15)
     .legend(dc.legend())
     .label(function(d) {
