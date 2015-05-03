@@ -16,7 +16,7 @@ function render(data){
     root.children = new Array();
     for (i=0;i<dataframe.length;i++){
       var item = {};
-                
+
       item.Title = dataframe[i][0];
       item.Author = dataframe[i][1];
       item.Started = dataframe[i][2];
@@ -35,13 +35,13 @@ function render(data){
     type(ndx);
     genre(ndx);
     store(ndx);
-    listDatatable(ndx);  
+    listDatatable(ndx);
 }
 
 function mapEntries(json, realrowlength, skip){
   if (!skip) skip = 0;
   var dataframe = new Array();
-  
+
   var row = new Array();
   for (var i=0; i < json.feed.entry.length; i++) {
 
@@ -58,7 +58,7 @@ function mapEntries(json, realrowlength, skip){
       var row = new Array();
     }
     row.push(entry.content.$t);
-  } 
+  }
   dataframe.push(row);
   return dataframe;
 }
@@ -73,7 +73,7 @@ function author(ndx){
     .dimension(hostDimension)
     .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
     .group(hostSumGroup)
-    .elasticX(true)    
+    .elasticX(true)
     .gap(0)
     .labelOffsetX(5)
     .label(function(d) {
@@ -90,10 +90,11 @@ function genre(ndx){
 
   genrePie
     .width(graphHolder)
-    .height(graphHolder)    
+    .height(graphHolder)
     .dimension(genreDimension)
-    .group(genreSumGroup)    
+    .group(genreSumGroup)
     .minAngleForLabel(.15)
+    .innerRadius(60)
     .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
     .legend(dc.legend())
     .label(function(d) {
@@ -111,9 +112,10 @@ function type(ndx){
 
   typePie
     .width(graphHolder)
-    .height(graphHolder)    
+    .height(graphHolder)
     .dimension(typeDimension)
-    .group(typeSumGroup)    
+    .group(typeSumGroup)
+    .innerRadius(60)
     .ordinalColors([ '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39'])    .minAngleForLabel(.15)
     .legend(dc.legend())
     .label(function(d) {
@@ -131,9 +133,10 @@ function store(ndx){
 
   storePie
     .width(graphHolder)
-    .height(graphHolder)    
+    .height(graphHolder)
     .dimension(storeDimension)
-    .group(storeSumGroup)    
+    .group(storeSumGroup)
+    .innerRadius(60)
     .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3'])
     .minAngleForLabel(.15)
     .legend(dc.legend())
