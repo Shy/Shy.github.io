@@ -3,32 +3,72 @@ var genrePie = dc.pieChart("#genrePie");
 var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
+var pageMonth = dc.barChart("#pageMonth");
 
+function render(data){
 
-d3.csv("data/Books.csv", function(error, data) {
-    if (error) {  //If error is not null, something went wrong.
-      console.log(error);  //Log the error.
-    } else {      //If no error, the file loaded correctly. Yay!
-      //Include other code to execute after successful file load here
-      dataset = data;
-    };
+  var dataframe = mapEntries(data,null,2);
 
-    var ndx           = crossfilter(dataset);
-    
+  var root =  {};
+    root.name = "Interactions";
+    root.children = new Array();
+    for (i=0;i<dataframe.length;i++){
+      var item = {};
+                
+      item.Title = dataframe[i][0];
+      item.Author = dataframe[i][1];
+      item.Started = dataframe[i][2];
+      item.Finished = dataframe[i][3];
+      item.Time = dataframe[i][4];
+      item.Pages = dataframe[i][5];
+      item.Format = dataframe[i][6];
+      item.Source = dataframe[i][7];
+      item.Type = dataframe[i][8];
+      item.Genre = dataframe[i][9];
+      item.PubYear = dataframe[i][10];
+
+      root.children.push(item);
+    }
+    var ndx           = crossfilter(root.children);
     author(ndx);
     type(ndx);
     genre(ndx);
     store(ndx);
-    listDatatable(ndx);
-});
+    listDatatable(ndx);  
+}
+
+function mapEntries(json, realrowlength, skip){
+  if (!skip) skip = 0;
+  var dataframe = new Array();
+  
+  var row = new Array();
+  for (var i=0; i < json.feed.entry.length; i++) {
+
+    var entry = json.feed.entry[i];
+    if (entry.gs$cell.col == '1') {
+      if (row != null) {
+        if ((!realrowlength || row.length === realrowlength) && (skip  === 0)){
+           dataframe.push(row);
+        } else {
+           if (skip > 0) skip--;
+        }
+      }
+
+      var row = new Array();
+    }
+    row.push(entry.content.$t);
+  } 
+  dataframe.push(row);
+  return dataframe;
+}
 
 function author(ndx){
   hostDimension  = ndx.dimension(function(d) {return d.Author;});
   hostSumGroup = hostDimension.group();
 
   authorRow
-    .width(520)
-    .height(520)
+    .width(420)
+    .height(420)
     .dimension(hostDimension)
     .group(hostSumGroup)
     .elasticX(true)    
@@ -47,8 +87,8 @@ function genre(ndx){
   genreSumGroup = genreDimension.group();
 
   genrePie
-    .width(520)
-    .height(520)    
+    .width(420)
+    .height(420)    
     .dimension(genreDimension)
     .group(genreSumGroup)    
     .colors(d3.scale.category10())
@@ -68,8 +108,8 @@ function type(ndx){
   typeSumGroup = typeDimension.group();
 
   typePie
-    .width(520)
-    .height(520)    
+    .width(420)
+    .height(420)    
     .dimension(typeDimension)
     .group(typeSumGroup)    
     .colors(d3.scale.category10())
@@ -89,8 +129,8 @@ function store(ndx){
   storeSumGroup = storeDimension.group();
 
   storePie
-    .width(520)
-    .height(520)    
+    .width(420)
+    .height(420)    
     .dimension(storeDimension)
     .group(storeSumGroup)    
     .colors(d3.scale.category10())
