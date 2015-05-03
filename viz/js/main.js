@@ -4,8 +4,11 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 // var pageMonth = dc.barChart("#pageMonth");
+
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
+
+var materialColours = ['#ff5722', '#e91e63',  '#673ab7', '#2196f3',  '#00bcd4',  '#4caf50',  '#cddc39',  '#ffc107','#ff9800'];
 
 function render(data){
 
@@ -30,10 +33,12 @@ function render(data){
 
       root.children.push(item);
     }
-    var ndx           = crossfilter(root.children);
+
+    var ndx = crossfilter(root.children);
+
     author(ndx);
-    type(ndx);
     genre(ndx);
+    type(ndx);
     store(ndx);
     listDatatable(ndx);
 }
@@ -64,88 +69,63 @@ function mapEntries(json, realrowlength, skip){
 }
 
 function author(ndx){
-  hostDimension  = ndx.dimension(function(d) {return d.Author;});
-  hostSumGroup = hostDimension.group();
-
-  authorRow
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(hostDimension)
-    .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
-    .group(hostSumGroup)
-    .elasticX(true)
-    .gap(0)
-    .labelOffsetX(5)
-    .label(function(d) {
-      return d.key;
-    });
-
-  authorRow.render();
+  authorDimension  = ndx.dimension(function(d) {return d.Author;});
+  rowChart(ndx, authorDimension, authorRow);
 }
 
 function genre(ndx){
-
   genreDimension  = ndx.dimension(function(d) {return d.Genre;});
-  genreSumGroup = genreDimension.group();
-
-  genrePie
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(genreDimension)
-    .group(genreSumGroup)
-    .minAngleForLabel(.15)
-    .innerRadius(60)
-    .ordinalColors([ '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336'])
-    .legend(dc.legend())
-    .label(function(d) {
-      percent = (Math.floor(d.value/genreDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
-    });
-
-  genrePie.render();
+  pieChart(ndx, genreDimension, genrePie);
 }
 
 function type(ndx){
-
   typeDimension  = ndx.dimension(function(d) {return d.Type;});
-  typeSumGroup = typeDimension.group();
-
-  typePie
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(typeDimension)
-    .group(typeSumGroup)
-    .innerRadius(60)
-    .ordinalColors([  '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b'])    .minAngleForLabel(.15)
-    .legend(dc.legend())
-    .label(function(d) {
-      percent = (Math.floor(d.value/typeDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
-    });
-
-  typePie.render();
+  pieChart(ndx, typeDimension,typePie);
 }
 
 function store(ndx){
-
   storeDimension  = ndx.dimension(function(d) {return d.Source;});
-  storeSumGroup = storeDimension.group();
+  pieChart(ndx, storeDimension, storePie);
+}
 
-  storePie
+function rowChart(ndx, dimension, rowChart){
+    SumGroup = dimension.group();
+
+    rowChart
+      .width(graphHolder)
+      .height(graphHolder)
+      .dimension(dimension)
+      .ordinalColors(materialColours)
+      .group(SumGroup)
+      .elasticX(true)
+      .gap(0)
+      .labelOffsetX(5)
+      .label(function(d) {
+        return d.key;
+      });
+
+  rowChart.render();
+
+}
+
+function pieChart(ndx,dimension,pieChart){
+  SumGroup = dimension.group();
+
+  pieChart
     .width(graphHolder)
     .height(graphHolder)
-    .dimension(storeDimension)
-    .group(storeSumGroup)
-    .innerRadius(60)
-    .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3'])
+    .dimension(dimension)
+    .group(SumGroup)
     .minAngleForLabel(.15)
+    .innerRadius(60)
+    .ordinalColors(materialColours)
     .legend(dc.legend())
     .label(function(d) {
-      percent = (Math.floor(d.value/storeDimension.groupAll().value() * 100));
+      percent = (Math.floor(d.value/dimension.groupAll().value() * 100));
       return d.key + ": " + percent + "%";
     });
 
-  storePie.render();
+  pieChart.render();
 }
 
 function listDatatable(ndx){
@@ -167,5 +147,4 @@ function listDatatable(ndx){
     .sortBy(function(d){ return d.Title; })
     .order(d3.ascending);
     dataTable.render();
-
 }
