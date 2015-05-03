@@ -19,13 +19,12 @@ function render(data){
       item.Author = dataframe[i][1];
       item.Started = dataframe[i][2];
       item.Finished = dataframe[i][3];
-      item.Time = dataframe[i][4];
-      item.Pages = dataframe[i][5];
-      item.Format = dataframe[i][6];
-      item.Source = dataframe[i][7];
-      item.Type = dataframe[i][8];
-      item.Genre = dataframe[i][9];
-      item.PubYear = dataframe[i][10];
+      item.Pages = dataframe[i][4];
+      item.Format = dataframe[i][5];
+      item.Source = dataframe[i][6];
+      item.Type = dataframe[i][7];
+      item.Genre = dataframe[i][8];
+      item.PubYear = dataframe[i][9];
 
       root.children.push(item);
     }
