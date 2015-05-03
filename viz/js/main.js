@@ -4,6 +4,8 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 // var pageMonth = dc.barChart("#pageMonth");
+var graphHolder = .9 * document.getElementById("graphHolder").offsetWidth;
+var listHolder = .9 * document.getElementById("listHolder").offsetWidth;
 
 function render(data){
 
@@ -66,8 +68,8 @@ function author(ndx){
   hostSumGroup = hostDimension.group();
 
   authorRow
-    .width(420)
-    .height(420)
+    .width(graphHolder)
+    .height(graphHolder)
     .dimension(hostDimension)
     .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722'])
     .group(hostSumGroup)
@@ -87,8 +89,8 @@ function genre(ndx){
   genreSumGroup = genreDimension.group();
 
   genrePie
-    .width(420)
-    .height(420)    
+    .width(graphHolder)
+    .height(graphHolder)    
     .dimension(genreDimension)
     .group(genreSumGroup)    
     .minAngleForLabel(.15)
@@ -108,8 +110,8 @@ function type(ndx){
   typeSumGroup = typeDimension.group();
 
   typePie
-    .width(420)
-    .height(420)    
+    .width(graphHolder)
+    .height(graphHolder)    
     .dimension(typeDimension)
     .group(typeSumGroup)    
     .ordinalColors([ '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39'])    .minAngleForLabel(.15)
@@ -128,8 +130,8 @@ function store(ndx){
   storeSumGroup = storeDimension.group();
 
   storePie
-    .width(420)
-    .height(420)    
+    .width(graphHolder)
+    .height(graphHolder)    
     .dimension(storeDimension)
     .group(storeSumGroup)    
     .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3'])
@@ -148,7 +150,7 @@ function listDatatable(ndx){
   var timeDimension = ndx.dimension(function (d) {
     return d.Name;
   });
-  dataTable.width(960)
+  dataTable.width(listHolder)
     .size(200)
     .dimension(timeDimension)
     .group(function(d) { return ""
