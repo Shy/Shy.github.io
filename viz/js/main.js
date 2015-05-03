@@ -4,8 +4,8 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 // var pageMonth = dc.barChart("#pageMonth");
-var graphHolder = .9 * document.getElementById("graphHolder").offsetWidth;
-var listHolder = .9 * document.getElementById("listHolder").offsetWidth;
+var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
+var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
 
 function render(data){
 
