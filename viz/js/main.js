@@ -3,7 +3,8 @@ var genrePie = dc.pieChart("#genrePie");
 var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
-// var pageMonth = dc.barChart("#pageMonth");
+var pageMonth = dc.lineChart("#pageMonth");
+
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
 
@@ -36,6 +37,7 @@ function render(data){
     genre(ndx);
     store(ndx);
     listDatatable(ndx);
+    pageGraph(ndx);
 }
 
 function mapEntries(json, realrowlength, skip){
@@ -116,7 +118,8 @@ function type(ndx){
     .dimension(typeDimension)
     .group(typeSumGroup)
     .innerRadius(60)
-    .ordinalColors([  '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b'])    .minAngleForLabel(.15)
+    .ordinalColors([  '#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5','#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b'])
+    .minAngleForLabel(.15)
     .legend(dc.legend())
     .label(function(d) {
       percent = (Math.floor(d.value/typeDimension.groupAll().value() * 100));
