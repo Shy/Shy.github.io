@@ -190,6 +190,8 @@ function pageGraph(ndx){
     .margins({top: 10, right: 10, bottom: 20, left: 40})
     .dimension(volumeByDay)
     .group(volumeByPageCount)
+    .xUnits(d3.time.days)
+    .brushOn(false)
     .ordinalColors(['#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b','#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7','#3f51b5'])
     .elasticY(true)
     .x(d3.time.scale().domain([new Date(2015, 1, 1), new Date()]))
