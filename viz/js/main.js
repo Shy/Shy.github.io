@@ -169,6 +169,39 @@ function listDatatable(ndx){
     ])
     .sortBy(function(d){ return d.Title; })
     .order(d3.ascending);
-    dataTable.render();
 
+    dataTable.render();
 }
+
+function pageGraph(ndx){
+  var volumeByDay = ndx.dimension(function (d) {
+        var format = d3.time.format("%m/%d/%Y");
+        return ( d3.time.day(format.parse(d.Finished)));
+    });
+
+  var volumeByPageCount = volumeByDay.group()
+    .reduceSum(function(d) {
+      return d.Pages;
+    });
+
+    pageMonth
+    .width(listHolder)
+    .height(graphHolder)
+    .margins({top: 10, right: 10, bottom: 20, left: 40})
+    .dimension(volumeByDay)
+    .group(volumeByPageCount)
+    .transitionDuration(500)
+    .ordinalColors(['#2196f3','#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b','#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7','#3f51b5'])
+    .elasticY(true)
+    .x(d3.time.scale().domain([new Date(2015, 1, 1), new Date()]))
+    .xAxis();
+
+    pageMonth.render();
+}
+
+
+
+
+
+
+
