@@ -4,13 +4,21 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 var pageMonth = dc.barChart("#pageMonth");
+var quarterChart = dc.pieChart('#quarter-chart');
+var dayOfWeekChart = dc.rowChart('#day-of-week-chart');
+
+
 
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
+var quarterHolder = .95 * document.getElementById("quarterHolder").offsetWidth;
+console.log(quarterHolder);
 
 function render(data){
 
   var dataframe = mapEntries(data,null,2);
+
+  var format = d3.time.format("%m/%d/%Y");
 
   var root =  {};
     root.name = "Interactions";
@@ -20,14 +28,16 @@ function render(data){
 
       item.Title = dataframe[i][0];
       item.Author = dataframe[i][1];
-      item.Started = dataframe[i][2];
-      item.Finished = dataframe[i][3];
+      item.Started = format.parse(dataframe[i][2]);
+      item.Finished = format.parse(dataframe[i][3]);
       item.Pages = dataframe[i][4];
       item.Format = dataframe[i][5];
       item.Source = dataframe[i][6];
       item.Type = dataframe[i][7];
       item.Genre = dataframe[i][8];
       item.PubYear = dataframe[i][9];
+      item.ReadTime = Math.round((item.Finished.getTime() - item.Started.getTime())/(1000*60*60*24));
+
 
       root.children.push(item);
     }
@@ -37,7 +47,9 @@ function render(data){
     genre(ndx);
     store(ndx);
     listDatatable(ndx);
+    dayofweek(ndx);
     pageGraph(ndx);
+    quarter(ndx);
 }
 
 function mapEntries(json, realrowlength, skip){
@@ -175,8 +187,7 @@ function listDatatable(ndx){
 
 function pageGraph(ndx){
   var volumeByDay = ndx.dimension(function (d) {
-        var format = d3.time.format("%m/%d/%Y");
-        return ( d3.time.day(format.parse(d.Finished)));
+        return ( d3.time.day(d.Finished));
     });
 
   var volumeByPageCount = volumeByDay.group()
@@ -200,8 +211,61 @@ function pageGraph(ndx){
     pageMonth.render();
 }
 
+function quarter(ndx){
+
+  var quarter = ndx.dimension(function (d) {
+        var month = d.Finished.getMonth();
+        if (month <= 2) {
+            return 'Q1';
+        } else if (month > 2 && month <= 5) {
+            return 'Q2';
+        } else if (month > 5 && month <= 8) {
+            return 'Q3';
+        } else {
+            return 'Q4';
+        }
+    });
+    var quarterGroup = quarter.group()// By Titles not page count.
+    // .reduceSum(function (d) {
+    //     return d.Pages;
+    // })
+    ;
 
 
+    quarterChart.width(quarterHolder)
+        .height(quarterHolder)
+        .radius(80)
+        .innerRadius(30)
+        .dimension(quarter)
+        .ordinalColors(['#f44336','#3f51b5','#009688', '#ffc107'])
+        .group(quarterGroup);
+  quarterChart.render();
+}
+
+function dayofweek(ndx){
+
+      var dayOfWeek = ndx.dimension(function (d) {
+        var day = (d.Finished.getDay() +6)%7;
+        var name = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+        return day + '.' + name[day];
+    });
+    var dayOfWeekGroup = dayOfWeek.group();
+
+      dayOfWeekChart.width(quarterHolder)
+        .height(quarterHolder)
+        .group(dayOfWeekGroup)
+        .dimension(dayOfWeek)
+        .ordinalColors(['#009688', '#4caf50', '#8bc34a', '#cddc39','#ffeb3b','#ffc107','#ff9800', '#ff5722','#f44336', '#e91e63', '#9c27b0', '#673ab7','#3f51b5','#2196f3','#03a9f4', '#00bcd4'])
+        .label(function (d) {
+            return d.key.split('.')[1];
+        })
+        .title(function (d) {
+            return d.value;
+        })
+        .elasticX(true)
+        .xAxis().ticks(4);
+      dayOfWeekChart.render();
+}
 
 
 
