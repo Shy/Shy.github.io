@@ -6,6 +6,7 @@ var dataTable = dc.dataTable("#listDatatable");
 var pageMonth = dc.barChart("#pageMonth");
 var quarterChart = dc.pieChart('#quarterPie');
 var dayOfWeekChart = dc.rowChart('#dayChart');
+var formatPie = dc.pieChart('#formatPie');
 
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
@@ -15,7 +16,7 @@ function render(data) {
 
   var dataframe = mapEntries(data, null, 2);
 
-  var format = d3.time.format("%m/%d/%Y");
+  var dateformat = d3.time.format("%m/%d/%Y");
 
   var root = {};
   root.name = "Interactions";
@@ -25,8 +26,8 @@ function render(data) {
 
     item.Title = dataframe[i][0];
     item.Author = dataframe[i][1];
-    item.Started = format.parse(dataframe[i][2]);
-    item.Finished = format.parse(dataframe[i][3]);
+    item.Started = dateformat.parse(dataframe[i][2]);
+    item.Finished = dateformat.parse(dataframe[i][3]);
     item.Pages = dataframe[i][4];
     item.Format = dataframe[i][5];
     item.Source = dataframe[i][6];
@@ -46,8 +47,9 @@ function render(data) {
   store(ndx);
   listDatatable(ndx);
   dayofweek(ndx);
-  pageGraph(ndx);
   quarter(ndx);
+  pageGraph(ndx);
+  format(ndx);
 
 }
 
@@ -256,7 +258,6 @@ function quarter(ndx) {
 
   quarterChart.width(quarterHolder)
     .height(quarterHolder)
-    .radius(80)
     .innerRadius(30)
     .dimension(quarter)
     .ordinalColors(['#f44336', '#3f51b5', '#009688', '#ffc107'])
@@ -286,4 +287,25 @@ function dayofweek(ndx) {
     .elasticX(true)
     .xAxis().ticks(4);
   dayOfWeekChart.render();
+}
+
+function format(ndx) {
+  formatDimension = ndx.dimension(function(d) {
+    return d.Format;
+  });
+  formatSumGroup = formatDimension.group();
+  formatPie
+    .width(quarterHolder)
+    .height(quarterHolder)
+    .dimension(formatDimension)
+    .group(formatSumGroup)
+    .minAngleForLabel(.15)
+    .innerRadius(30)
+    .ordinalColors([ '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336','#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4'])
+    .label(function(d) {
+      percent = (Math.floor(d.value / formatDimension.groupAll().value() * 100));
+      return d.key + ": " + percent + "%";
+    });
+
+  formatPie.render();
 }
