@@ -4,15 +4,12 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 var pageMonth = dc.barChart("#pageMonth");
-var quarterChart = dc.pieChart('#quarter-chart');
-var dayOfWeekChart = dc.rowChart('#day-of-week-chart');
-
-
+var quarterChart = dc.pieChart('#quarterPie');
+var dayOfWeekChart = dc.rowChart('#dayChart');
 
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
 var quarterHolder = .95 * document.getElementById("quarterHolder").offsetWidth;
-console.log(quarterHolder);
 
 function render(data) {
 
@@ -42,6 +39,7 @@ function render(data) {
     root.children.push(item);
   }
   var ndx = crossfilter(root.children);
+
   author(ndx);
   type(ndx);
   genre(ndx);
@@ -50,6 +48,7 @@ function render(data) {
   dayofweek(ndx);
   pageGraph(ndx);
   quarter(ndx);
+
 }
 
 function mapEntries(json, realrowlength, skip) {
@@ -275,8 +274,8 @@ function dayofweek(ndx) {
 
   dayOfWeekChart.width(quarterHolder)
     .height(quarterHolder)
-    .group(dayOfWeekGroup)
     .dimension(dayOfWeek)
+    .group(dayOfWeekGroup)
     .ordinalColors(['#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4'])
     .label(function(d) {
       return d.key.split('.')[1];
