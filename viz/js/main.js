@@ -4,7 +4,7 @@ var typePie = dc.pieChart("#typePie");
 var storePie = dc.pieChart("#storePie");
 var dataTable = dc.dataTable("#listDatatable");
 var pageMonth = dc.barChart("#pageMonth");
-var quarterChart = dc.pieChart('#quarterPie');
+var quarterChart = dc.rowChart('#quarterPie');
 var dayOfWeekChart = dc.rowChart('#dayChart');
 var formatPie = dc.pieChart('#formatPie');
 
@@ -230,7 +230,7 @@ function pageGraph(ndx) {
     .brushOn(false)
     .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
     .elasticY(true)
-    .x(d3.time.scale().domain([new Date(2015, 1, 1), new Date()]))
+    .x(d3.time.scale().domain([new Date(2015, 0, 0), new Date()]))
     .xAxis();
 
   pageMonth.render();
@@ -240,16 +240,12 @@ function quarter(ndx) {
 
   var quarter = ndx.dimension(function(d) {
     var month = d.Finished.getMonth();
-    if (month <= 2) {
-      return 'Q1';
-    } else if (month > 2 && month <= 5) {
-      return 'Q2';
-    } else if (month > 5 && month <= 8) {
-      return 'Q3';
-    } else {
-      return 'Q4';
-    }
+    return month;
   });
+
+  var mL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var mS = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
   var quarterGroup = quarter.group() // By Titles not page count.
     // .reduceSum(function (d) {
     //     return d.Pages;
@@ -258,10 +254,10 @@ function quarter(ndx) {
 
   quarterChart.width(quarterHolder)
     .height(quarterHolder)
-    .innerRadius(30)
     .dimension(quarter)
-    .ordinalColors(['#f44336', '#3f51b5', '#009688', '#ffc107'])
-    .group(quarterGroup);
+    .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
+    .group(quarterGroup)
+    .label(function(d){ return mS[d.key];});
   quarterChart.render();
 }
 
