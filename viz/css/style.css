@@ -9,3 +9,10 @@
 .icon-block {
   padding: 0 15px;
 }
+
+.switch label input[type=checkbox]:checked + .lever {
+    background-color: #818181;
+}
+.switch label input[type=checkbox]:checked + .lever:after{
+    background-color: #F1F1F1;
+}

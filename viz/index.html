@@ -16,6 +16,14 @@
   <nav  style="background-color: #1e2b58 !important" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="http://ruparel.co/" class="brand-logo"><img src="images/logo.png" width="205px"></a>
       <ul class="right hide-on-med-and-down">
+        <li><div class="switch">
+    <label>
+      Volumes
+      <input type="checkbox" id="ValueType" onclick="ValueTypeChange()">
+      <span class="lever"></span>
+      Pages
+    </label>
+  </div></li>
         <li>
           <a href='https://docs.google.com/spreadsheets/d/1ISIa2f09vx3qXUyAtnw0J8UdU-tEstBFkfuiQt1Ueqg/edit?usp=sharing;'><i class="mdi-action-description"></i></a>
         </li>
@@ -64,7 +72,7 @@
       </div>
       <div class="row">
         <div class="col s12 m12">
-            <h5 class="center-align">Page Count</h5>
+            <h5 class="center-align">Frequency over Time</h5>
             <div class="divider"></div>
             <div id="pageMonth"></div>
         </div>
