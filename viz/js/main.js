@@ -328,7 +328,6 @@ function ValueTypeChange(){
     console.log("Off");
     groupByVolume();
   }
-  dc.filterAll();
   dc.redrawAll();
 }
 
