@@ -7,6 +7,7 @@ var pageMonth = dc.barChart("#pageMonth");
 var monthRow = dc.rowChart('#quarterPie');
 var dayOfWeekChart = dc.rowChart('#dayChart');
 var formatPie = dc.pieChart('#formatPie');
+var publishBar = dc.rowChart('#publishBar');
 
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
@@ -50,6 +51,7 @@ function render(data) {
   quarter(ndx);
   pageGraph(ndx);
   format(ndx);
+  publishYear(ndx);
 
 }
 
@@ -261,7 +263,8 @@ function quarter(ndx) {
     .elasticX(true)
     .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
     .group(quarterSumGroup)
-    .label(function(d){ return mS[d.key];});
+    .label(function(d){ return mS[d.key];})
+     .xAxis().ticks(5);
   monthRow.render();
 }
 
@@ -289,7 +292,7 @@ function dayofweek(ndx) {
       return d.value;
     })
     .elasticX(true)
-    .xAxis().ticks(4);
+    .xAxis().ticks(5);
   dayOfWeekChart.render();
 }
 
@@ -317,15 +320,31 @@ function format(ndx) {
 
     });
 
-  formatPie.render();
+    formatPie.render();
+}
+
+function publishYear(ndx){
+  pubYearDimension = ndx.dimension(function(d){
+    return d.PubYear;
+  })
+  pubYearGroup = pubYearDimension.group();
+  pubYearPages = pubYearDimension.group().reduceSum(function(d){return d.Pages;})
+
+  publishBar.width(quarterHolder)
+            .height(quarterHolder)
+            .dimension(pubYearDimension)
+            .group(pubYearGroup)
+            .elasticX(true)
+            .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
+             .xAxis().ticks(5);
+
+  publishBar.render();
 }
 
 function ValueTypeChange(){
   if($('#ValueType').is(':checked')) {
-    console.log("On");
     groupByPages();
   } else {
-    console.log("Off");
     groupByVolume();
   }
   dc.redrawAll();
@@ -337,6 +356,7 @@ function groupByVolume(){
   updatePieByVolume(storePie, storeSumGroup);
   updatePieByVolume(typePie, typeSumGroup);
 
+  publishBar.group(pubYearGroup);
   monthRow.group(quarterSumGroup);
   pageMonth.group(volumeBySum);
   dayOfWeekChart.group(dayOfWeekGroup);
@@ -349,6 +369,7 @@ function groupByPages(){
   updatePieByPages(storePie, storeSumPage);
   updatePieByPages(typePie, typeSumPages);
 
+  publishBar.group(pubYearPages);
   monthRow.group(quarterPageGroup);
   pageMonth.group(volumeByPageCount);
   dayOfWeekChart.group(dayOfWeekPages);
