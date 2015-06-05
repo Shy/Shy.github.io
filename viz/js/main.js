@@ -7,7 +7,8 @@ var pageMonth = dc.barChart("#pageMonth");
 var monthRow = dc.rowChart('#quarterPie');
 var dayOfWeekChart = dc.rowChart('#dayChart');
 var formatPie = dc.pieChart('#formatPie');
-var publishBar = dc.rowChart('#publishBar');
+var publishRow = dc.rowChart('#publishRow');
+var completionRow = dc.rowChart("#completionRow");
 
 var graphHolder = .95 * document.getElementById("graphHolder").offsetWidth;
 var listHolder = .95 * document.getElementById("listHolder").offsetWidth;
@@ -50,8 +51,10 @@ function render(data) {
   dayofweek(ndx);
   quarter(ndx);
   pageGraph(ndx);
+  completionTime(ndx);
   format(ndx);
   publishYear(ndx);
+  completionTime(ndx);
 
 }
 
@@ -86,19 +89,19 @@ function author(ndx) {
   });
   hostSumGroup = hostDimension.group();
   hostSumPages = hostDimension.group()
-                                .reduceSum(function(d){return d.Pages;});
+  .reduceSum(function(d){return d.Pages;});
   authorRow
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(hostDimension)
-    .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'])
-    .group(hostSumGroup)
-    .elasticX(true)
-    .gap(0)
-    .labelOffsetX(5)
-    .label(function(d) {
-      return d.key;
-    });
+  .width(graphHolder)
+  .height(graphHolder)
+  .dimension(hostDimension)
+  .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'])
+  .group(hostSumGroup)
+  .elasticX(true)
+  .gap(0)
+  .labelOffsetX(5)
+  .label(function(d) {
+    return d.key;
+  });
 
   authorRow.render();
 }
@@ -110,21 +113,21 @@ function genre(ndx) {
   });
   genreSumGroup = genreDimension.group();
   genreSumPage = genreDimension.group()
-                               .reduceSum(function (d){return d.Pages;});
+  .reduceSum(function (d){return d.Pages;});
 
   genrePie
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(genreDimension)
-    .group(genreSumGroup)
-    .minAngleForLabel(.15)
-    .innerRadius(60)
-    .ordinalColors(['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336'])
-    .legend(dc.legend())
-    .label(function(d) {
-      percent = (Math.floor(d.value / genreDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
-    });
+  .width(graphHolder)
+  .height(graphHolder)
+  .dimension(genreDimension)
+  .group(genreSumGroup)
+  .minAngleForLabel(.15)
+  .innerRadius(60)
+  .ordinalColors(['#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336'])
+  .legend(dc.legend())
+  .label(function(d) {
+    percent = (Math.floor(d.value / genreDimension.groupAll().value() * 100));
+    return d.key + ": " + percent + "%";
+  });
 
   genrePie.render();
 }
@@ -138,18 +141,18 @@ function type(ndx) {
   typeSumPages = typeDimension.group().reduceSum(function(d){return d.Pages;});
 
   typePie
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(typeDimension)
-    .group(typeSumGroup)
-    .innerRadius(60)
-    .ordinalColors(['#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'])
-    .minAngleForLabel(.15)
-    .legend(dc.legend())
-    .label(function(d) {
-      percent = (Math.floor(d.value / typeDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
-    });
+  .width(graphHolder)
+  .height(graphHolder)
+  .dimension(typeDimension)
+  .group(typeSumGroup)
+  .innerRadius(60)
+  .ordinalColors(['#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'])
+  .minAngleForLabel(.15)
+  .legend(dc.legend())
+  .label(function(d) {
+    percent = (Math.floor(d.value / typeDimension.groupAll().value() * 100));
+    return d.key + ": " + percent + "%";
+  });
 
   typePie.render();
 }
@@ -163,18 +166,18 @@ function store(ndx) {
   storeSumPage = storeDimension.group().reduceSum(function(d){return d.Pages;});
 
   storePie
-    .width(graphHolder)
-    .height(graphHolder)
-    .dimension(storeDimension)
-    .group(storeSumGroup)
-    .innerRadius(60)
-    .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3'])
-    .minAngleForLabel(.15)
-    .legend(dc.legend())
-    .label(function(d) {
-      percent = (Math.floor(d.value / storeDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
-    });
+  .width(graphHolder)
+  .height(graphHolder)
+  .dimension(storeDimension)
+  .group(storeSumGroup)
+  .innerRadius(60)
+  .ordinalColors(['#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3'])
+  .minAngleForLabel(.15)
+  .legend(dc.legend())
+  .label(function(d) {
+    percent = (Math.floor(d.value / storeDimension.groupAll().value() * 100));
+    return d.key + ": " + percent + "%";
+  });
 
   storePie.render();
 }
@@ -185,29 +188,29 @@ function listDatatable(ndx) {
     return d.Name;
   });
   dataTable.width(listHolder)
-    .size(200)
-    .dimension(timeDimension)
-    .group(function(d) {
-      return ""
-    })
-    .columns([
-      function(d) {
-        return d.Title;
-      },
-      function(d) {
-        return d.Pages;
-      },
-      function(d) {
-        return d.Author;
-      },
-      function(d) {
-        return d.Genre;
-      },
-    ])
-    .sortBy(function(d) {
+  .size(200)
+  .dimension(timeDimension)
+  .group(function(d) {
+    return ""
+  })
+  .columns([
+    function(d) {
       return d.Title;
-    })
-    .order(d3.ascending);
+    },
+    function(d) {
+      return d.Pages;
+    },
+    function(d) {
+      return d.Author;
+    },
+    function(d) {
+      return d.Genre;
+    },
+    ])
+  .sortBy(function(d) {
+    return d.Title;
+  })
+  .order(d3.ascending);
 
   dataTable.render();
 }
@@ -218,27 +221,27 @@ function pageGraph(ndx) {
   });
   volumeBySum = volumeByDay.group();
   volumeByPageCount = volumeByDay.group()
-    .reduceSum(function(d) {
-      return d.Pages;
-    });
+  .reduceSum(function(d) {
+    return d.Pages;
+  });
 
   pageMonth
-    .width(listHolder)
-    .height(graphHolder)
-    .margins({
-      top: 10,
-      right: 10,
-      bottom: 20,
-      left: 40
-    })
-    .dimension(volumeByDay)
-    .group(volumeBySum)
-    .xUnits(d3.time.days)
-    .brushOn(false)
-    .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
-    .elasticY(true)
-    .x(d3.time.scale().domain([new Date(2015, 0, 0), new Date()]))
-    .xAxis();
+  .width(listHolder)
+  .height(graphHolder)
+  .margins({
+    top: 10,
+    right: 10,
+    bottom: 20,
+    left: 40
+  })
+  .dimension(volumeByDay)
+  .group(volumeBySum)
+  .xUnits(d3.time.days)
+  .brushOn(false)
+  .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
+  .elasticY(true)
+  .x(d3.time.scale().domain([new Date(2015, 0, 0), new Date()]))
+  .xAxis();
 
   pageMonth.render();
 }
@@ -258,13 +261,14 @@ function quarter(ndx) {
 
 
   monthRow.width(quarterHolder)
-    .height(quarterHolder)
-    .dimension(quarter)
-    .elasticX(true)
-    .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
-    .group(quarterSumGroup)
-    .label(function(d){ return mS[d.key];})
-     .xAxis().ticks(5);
+  .height(quarterHolder)
+  .dimension(quarter)
+  .elasticX(true)
+  .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
+  .group(quarterSumGroup)
+  .gap(0)
+  .label(function(d){ return mS[d.key];})
+  .xAxis().ticks(5);
   monthRow.render();
 }
 
@@ -276,23 +280,24 @@ function dayofweek(ndx) {
   });
   dayOfWeekGroup = dayOfWeek.group();
   dayOfWeekPages = dayOfWeek.group()
-                                .reduceSum(function(d) {
-                                  return d.Pages;
-                                });
+  .reduceSum(function(d) {
+    return d.Pages;
+  });
 
   dayOfWeekChart.width(quarterHolder)
-    .height(quarterHolder)
-    .dimension(dayOfWeek)
-    .group(dayOfWeekGroup)
-    .ordinalColors(['#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4'])
-    .label(function(d) {
-      return d.key.split('.')[1];
-    })
-    .title(function(d) {
-      return d.value;
-    })
-    .elasticX(true)
-    .xAxis().ticks(5);
+  .height(quarterHolder)
+  .dimension(dayOfWeek)
+  .gap(0)
+  .group(dayOfWeekGroup)
+  .ordinalColors(['#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4'])
+  .label(function(d) {
+    return d.key.split('.')[1];
+  })
+  .title(function(d) {
+    return d.value;
+  })
+  .elasticX(true)
+  .xAxis().ticks(5);
   dayOfWeekChart.render();
 }
 
@@ -302,25 +307,25 @@ function format(ndx) {
   });
   formatSumGroup = formatDimension.group();
   formatpageGroup = formatDimension.group()
-            .reduceSum(function(d) {
-              return d.Pages;
-            });
+  .reduceSum(function(d) {
+    return d.Pages;
+  });
 
   formatPie
-    .width(quarterHolder)
-    .height(quarterHolder)
-    .dimension(formatDimension)
-    .group(formatSumGroup)
-    .minAngleForLabel(.15)
-    .innerRadius(30)
-    .ordinalColors([ '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336','#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4'])
-    .label(function(d) {
-      percent = (Math.floor(d.value / formatDimension.groupAll().value() * 100));
-      return d.key + ": " + percent + "%";
+  .width(quarterHolder)
+  .height(quarterHolder)
+  .dimension(formatDimension)
+  .group(formatSumGroup)
+  .minAngleForLabel(.15)
+  .innerRadius(30)
+  .ordinalColors([ '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336','#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4'])
+  .label(function(d) {
+    percent = (Math.floor(d.value / formatDimension.groupAll().value() * 100));
+    return d.key + ": " + percent + "%";
 
-    });
+  });
 
-    formatPie.render();
+  formatPie.render();
 }
 
 function publishYear(ndx){
@@ -328,18 +333,41 @@ function publishYear(ndx){
     return d.PubYear;
   })
   pubYearGroup = pubYearDimension.group();
-  pubYearPages = pubYearDimension.group().reduceSum(function(d){return d.Pages;})
+  pubYearPages = pubYearDimension.group().reduceSum(function(d){return d.Pages;});
 
-  publishBar.width(quarterHolder)
-            .height(quarterHolder)
-            .dimension(pubYearDimension)
-            .group(pubYearGroup)
-            .elasticX(true)
-            .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
-             .xAxis().ticks(5);
+  publishRow.width(quarterHolder)
+  .height(quarterHolder)
+  .dimension(pubYearDimension)
+  .group(pubYearGroup)
+  .gap(0)
+  .elasticX(true)
+  .ordinalColors(['#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5'])
+  .xAxis().ticks(5);
 
-  publishBar.render();
+  publishRow.render();
 }
+
+function completionTime(ndx){
+  completionDimension = ndx.dimension(function(d){
+    interval =  (d.Finished -  d.Started)/86400000;
+    console.log(interval);
+    return interval;
+  });
+  completionGroup = completionDimension.group();
+  completionPages = completionDimension.group().reduceSum(function(d){return d.Pages;});
+  completionDimension
+  completionRow.width(quarterHolder)
+  .height(quarterHolder)
+  .dimension(completionDimension)
+  .group(completionGroup)
+  .gap(0)
+  .elasticX(true)
+  .ordinalColors(['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722'])
+  .xAxis().ticks(5);
+
+  completionRow.render();
+}
+
 
 function ValueTypeChange(){
   if($('#ValueType').is(':checked')) {
@@ -350,17 +378,19 @@ function ValueTypeChange(){
   dc.redrawAll();
 }
 
+
 function groupByVolume(){
   updatePieByVolume(formatPie, formatSumGroup);
   updatePieByVolume(genrePie, genreSumGroup);
   updatePieByVolume(storePie, storeSumGroup);
   updatePieByVolume(typePie, typeSumGroup);
 
-  publishBar.group(pubYearGroup);
+  publishRow.group(pubYearGroup);
   monthRow.group(quarterSumGroup);
   pageMonth.group(volumeBySum);
   dayOfWeekChart.group(dayOfWeekGroup);
   authorRow.group(hostSumGroup);
+  completionRow.group(completionGroup);
 }
 
 function groupByPages(){
@@ -369,11 +399,12 @@ function groupByPages(){
   updatePieByPages(storePie, storeSumPage);
   updatePieByPages(typePie, typeSumPages);
 
-  publishBar.group(pubYearPages);
+  publishRow.group(pubYearPages);
   monthRow.group(quarterPageGroup);
   pageMonth.group(volumeByPageCount);
   dayOfWeekChart.group(dayOfWeekPages);
   authorRow.group(hostSumPages);
+  completionRow.group(completionPages);
 }
 
 function updatePieByPages(chart, Group){
@@ -383,10 +414,10 @@ function updatePieByPages(chart, Group){
     total += all[i].value;
   }
   chart.group(Group)
-    .label(function(d) {
-      percent = (Math.floor(d.value / total * 100));
-      return d.key + ": " + percent + "%";
-    });
+  .label(function(d) {
+    percent = (Math.floor(d.value / total * 100));
+    return d.key + ": " + percent + "%";
+  });
 }
 
 function updatePieByVolume(chart, Group){
