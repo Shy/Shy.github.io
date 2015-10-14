@@ -188,7 +188,7 @@ function listDatatable(ndx) {
     return d.Name;
   });
   dataTable.width(listHolder)
-  .size(200)
+  .size(1000)
   .dimension(timeDimension)
   .group(function(d) {
     return ""
