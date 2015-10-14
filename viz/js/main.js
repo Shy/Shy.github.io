@@ -185,7 +185,7 @@ function store(ndx) {
 function listDatatable(ndx) {
 
   var timeDimension = ndx.dimension(function(d) {
-    return d.Name;
+    return d.Title;
   });
   dataTable.width(listHolder)
   .size(1000)
